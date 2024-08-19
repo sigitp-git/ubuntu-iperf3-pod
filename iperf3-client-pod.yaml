@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iperf3-client-pod
+spec:
+  containers:
+  - name: iperf3-container
+    image: 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-iperf3
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 300000; done;" ]  
