@@ -2,28 +2,36 @@
 Dockerfile and Pod definition for iperf3 on Ubuntu, useful for throughput testing on your Kubernetes cluster
 
 ### 1. building ubuntu-iperf3 container image and upload it to AWS ECR, change 01234567890 to your AWS account ID
+```
 aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 01234567890.dkr.ecr.us-east-1.amazonaws.com
 sudo docker buildx build --platform linux/amd64,linux/arm64 -t 01234567890.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-iperf3 --push .
+```
 
 ### 2. create server and client pods
-kubectl apply -f iperf3-client-pod.yaml
-kubectl apply -f iperf3-server-pod.yaml
+```
+Admin:~/environment $ kubectl apply -f iperf3-client-pod.yaml
+Admin:~/environment $ kubectl apply -f iperf3-server-pod.yaml
 
 Admin:~/environment $ kubectl get po -o wide
 NAME                                READY   STATUS    RESTARTS       AGE     IP               NODE                             NOMINATED NODE   READINESS GATES
 iperf3-client-pod                          1/1     Running   0              9m44s   172.31.148.220   ip-172-31-152-24.ec2.internal    <none>           <none>
 iperf3-server-pod                          1/1     Running   0              6m36s   172.31.150.90    ip-172-31-148-193.ec2.internal   <none>           <none>
 Admin:~/environment $ 
+```
 
 ### 3. execute the iperf3 server, port 5201
-kubectl exec -it iperf3-server-pod -- bash
+```
+Admin:~/environment $ kubectl exec -it iperf3-server-pod -- bash
 root@iperf3-pod:/# iperf3 -s -p 5201
 -----------------------------------------------------------
 Server listening on 5201
 -----------------------------------------------------------
 
+```
+
 ### 4. test using iperf3 client
-kubectl exec -it iperf3-client-pod -- bash
+```
+Admin:~/environment $ kubectl exec -it iperf3-client-pod -- bash
 root@iperf3-pod2:/# iperf3 -c 172.31.148.220 -p 5201
 Connecting to host 172.31.148.220, port 5201
 [  5] local 172.31.150.90 port 55976 connected to 172.31.148.220 port 5201
@@ -241,3 +249,4 @@ Connecting to host 172.31.148.220, port 5201
 
 iperf Done.
 root@iperf3-pod2:/# 
+```
