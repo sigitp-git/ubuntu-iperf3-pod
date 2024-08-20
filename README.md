@@ -250,6 +250,7 @@ Connecting to host 172.31.148.220, port 5201
 iperf Done.
 root@iperf3-pod2:/#
 
+## bound to specific interface IP address with -B
 root@iperf3-pod2:/# iperf3 -c 10.12.0.21 -p 12345  -B 10.12.0.25 -t 10
 ------------------------------------------------------------
 Client connecting to 10.12.0.21, TCP port 12345
@@ -257,6 +258,26 @@ Binding to local address 10.12.0.25
 TCP window size: 2.86 MByte (default)
 ------------------------------------------------------------
 [  3] local 10.12.0.25 port 37013 connected with 10.12.0.21 port 12345
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  11.5 GBytes  9.90 Gbits/sec
+
+## pin cpu using taskset
+root@iperf3-pod2:/# taskset -c 60 iperf -c 10.12.0.21 -p 12345  -B 10.12.0.25 -t 10
+------------------------------------------------------------
+Client connecting to 10.12.0.21, TCP port 12345
+Binding to local address 10.12.0.25
+TCP window size:  455 KByte (default)
+------------------------------------------------------------
+[  3] local 10.12.0.25 port 47729 connected with 10.12.0.21 port 12345
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  11.5 GBytes  9.89 Gbits/sec
+[ec2-user@bmn-sf2 ~]$ taskset -c 60,61,62,63 iperf -c 10.12.0.21 -p 12345  -B 10.12.0.25 -t 10
+------------------------------------------------------------
+Client connecting to 10.12.0.21, TCP port 12345
+Binding to local address 10.12.0.25
+TCP window size: 2.95 MByte (default)
+------------------------------------------------------------
+[  3] local 10.12.0.25 port 52981 connected with 10.12.0.21 port 12345
 [ ID] Interval       Transfer     Bandwidth
 [  3]  0.0-10.0 sec  11.5 GBytes  9.90 Gbits/sec
 ```
