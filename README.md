@@ -280,4 +280,54 @@ TCP window size: 2.95 MByte (default)
 [  3] local 10.12.0.25 port 52981 connected with 10.12.0.21 port 12345
 [ ID] Interval       Transfer     Bandwidth
 [  3]  0.0-10.0 sec  11.5 GBytes  9.90 Gbits/sec
+
+# bound server and client to a specific IP address
+ubuntu@cx2-eks-worker-node2:~$ iperf -s -B 10.12.0.22 -p 12345
+------------------------------------------------------------
+Server listening on TCP port 12345
+TCP window size:  128 KByte (default)
+------------------------------------------------------------
+[  1] local 10.12.0.22 port 12345 connected with 10.12.0.25 port 39326
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-10.0034 sec  28.8 GBytes  24.7 Gbits/sec
+[  2] local 10.12.0.22 port 12345 connected with 10.12.0.24 port 57237
+[ ID] Interval       Transfer     Bandwidth
+[  2] 0.0000-10.0028 sec  28.8 GBytes  24.7 Gbits/sec
+[  3] local 10.12.0.22 port 12345 connected with 10.12.0.26 port 59857
+[ ID] Interval       Transfer     Bandwidth
+[  3] 0.0000-10.0032 sec  28.8 GBytes  24.7 Gbits/sec
+[  4] local 10.12.0.22 port 12345 connected with 10.12.0.27 port 44619
+[ ID] Interval       Transfer     Bandwidth
+[  4] 0.0000-10.0027 sec  28.8 GBytes  24.7 Gbits/sec
+
+ubuntu@cx2-eks-worker-node2:~$ iperf -s -B 10.13.0.22 -p 12345
+------------------------------------------------------------
+Server listening on TCP port 12345
+TCP window size:  128 KByte (default)
+------------------------------------------------------------
+[  1] local 10.13.0.22 port 12345 connected with 10.13.0.24 port 56269
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-10.0014 sec  28.8 GBytes  24.7 Gbits/sec
+[  2] local 10.13.0.22 port 12345 connected with 10.13.0.25 port 39699
+[ ID] Interval       Transfer     Bandwidth
+[  2] 0.0000-10.0206 sec  28.8 GBytes  24.7 Gbits/sec
+[  3] local 10.13.0.22 port 12345 connected with 10.13.0.26 port 55574
+[ ID] Interval       Transfer     Bandwidth
+[  3] 0.0000-10.0015 sec  28.8 GBytes  24.7 Gbits/sec
+[  4] local 10.13.0.22 port 12345 connected with 10.13.0.27 port 56757
+[ ID] Interval       Transfer     Bandwidth
+[  4] 0.0000-10.0026 sec  28.8 GBytes  24.7 Gbits/sec
+Cubuntu@cx2-eks-worker-node2:~$
+
+ec2-user@ip-10-11-3-189 network-scripts]$ iperf -c 10.12.0.22 -p 12345  -B 10.12.0.25 -t 10
+------------------------------------------------------------
+Client connecting to 10.12.0.22, TCP port 12345
+Binding to local address 10.12.0.25
+TCP window size:  455 KByte (default)
+------------------------------------------------------------
+[  3] local 10.12.0.25 port 39326 connected with 10.12.0.22 port 12345
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  28.8 GBytes  24.7 Gbits/sec
+[ec2-user@ip-10-11-3-189 network-scripts]$
+
 ```
